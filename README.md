@@ -26,10 +26,10 @@ What it is, why I chose it, why it is challenging, etc.
       - SUBJ: main verb is inflected for case and number (usually 3rd person sg)
 
       - OBJ: do-support if there is no other aux and main verb is in infinitival form
-
-    - extraction from adjuncts
-    
-    - extraction from PPs (with stranded P)
+      - 
+   - extraction from adjuncts
+     
+   - extraction from PPs (with stranded P)
 
 
 
