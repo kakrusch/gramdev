@@ -15,7 +15,10 @@ What it is, why I chose it, why it is challenging, etc.
 ## Implementation approach/design
 
 Challenges:
-    - different between subject and object wh-word origin
+
+    - difference between subject and object wh-word origin
+    - extraction from adjuncts
+    - extraction from PPs (with stranded P)
 
 
 
