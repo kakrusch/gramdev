@@ -14,6 +14,11 @@ What it is, why I chose it, why it is challenging, etc.
 
 ## Implementation approach/design
 
+Challenges:
+    - different between subject and object wh-word origin
+
+
+
 your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuire design, etc), and the challenges that remain.
 You can have subheadings in this document.
 
