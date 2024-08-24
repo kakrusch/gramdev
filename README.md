@@ -14,8 +14,11 @@ What it is, why I chose it, why it is challenging, etc.
 
 ## Implementation approach/design
 
+your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuire design, etc), and the challenges that remain. You can have subheadings in this document.
 
-   - new rule for WHQ: wh-words are banned in declaratives and vice verse
+   - new rule for WHQ:
+      -   rule consists of a VP and then allowed stuff before 
+      -   wh-words are banned in declaratives and vice verse
 
    - wh-words as pronouns (only gender and number in specific cases)
 
@@ -33,8 +36,6 @@ What it is, why I chose it, why it is challenging, etc.
 
 
 
-your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuire design, etc), and the challenges that remain.
-You can have subheadings in this document.
 
 ## Files
 
