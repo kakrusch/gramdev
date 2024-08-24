@@ -21,11 +21,11 @@ What it is, why I chose it, why it is challenging, etc.
 
    - wh-word fronting via FOCUS and uncertainty paths
 
-    - difference between subject and object wh-word origin:
+   - difference between subject and object wh-word origin:
 
-            - SUBJ: main verb is inflected for case and number (usually 3rd person sg)
+      - SUBJ: main verb is inflected for case and number (usually 3rd person sg)
 
-            - OBJ: do-support if there is no other aux and main verb is in infinitival form
+      - OBJ: do-support if there is no other aux and main verb is in infinitival form
 
     
     - extraction from adjuncts
