@@ -52,6 +52,7 @@ Other Lexicon Changes:
 
 ### WH-words in the lexicon:
 - all wh-words are treated like pronouns, but have `(^ PRON-TYPE) = int`
+- all wh-words have capital and lowercased versions
 - I added an additional feature (^REL) that can be either "+" or "-", to specify wh-words that can also be relative pronouns. This difference is relevant because those pronouns that can be relative must have an NP-position (such as the subject or Object).
 
 Pronouns that can act as relative pronouns -> can come from subject or object (must be NP) 
@@ -63,9 +64,14 @@ pronouns that do not act as relative pronouns -> not from subject or OBJ, agreem
 - Where and When: personal -> can be within PP
 - How and Why: personal -> cannot come from PP/strand a P
 
-
+optionally relative pronouns:
 - Who: like regular personal pronouns, but is of the type that can be relative
-- Which and Whose: like possessive pronouns, but without PERSON or NUMBER features, as they don't have these features inherently and don'
+- Which and Whose: like possessive pronouns, but without PERSON or NUMBER features, as they don't have these features inherently and don't need to agree, as their sister-noun will agree if needed.
+- what: alternatively either like "who" or like "which/whose"
+
+  non-relative pronouns:
+  - where and when: like personal pronouns but also without agreement, as they are always from adjuncts and don't need to agree
+  - how and why: like where/when, but have an Inside-Out Functional uncertainty to designate them as not being the object of a preposition, and thus not allowing stranded Ps "Why did Mary appear from __?"
 
 
 
