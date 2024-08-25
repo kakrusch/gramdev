@@ -45,6 +45,9 @@ your implementation approach/design and the reasons for it (including usage of O
 
 - add Adjunct because-CP to base S rules, to have a hypothetical answer to "How" or "Why", add because to lexicon
 
+- in S's NP: (! (POSS) PRON-TYPE) ~= int
+     - disallow interrogative type pronouns in SUBJ of normal sentence
+
 Other Lexicon Changes:
 
 - add a Question mark (?) that makes sentences interrogative type
@@ -73,7 +76,25 @@ optionally relative pronouns:
   - where and when: like personal pronouns but also without agreement, as they are always from adjuncts and don't need to agree
   - how and why: like where/when, but have an Inside-Out Functional uncertainty to designate them as not being the object of a preposition, and thus not allowing stranded Ps "Why did Mary appear from __?"
 
+### WHQ Rule 
+I introduced a rule called WHQ (WH-question), to generate wh-questions (as opposed to polar questions).
 
+     - 
+- Base outline of the rule:
+     - some kind of wh-word: either a wh-word and do-support or a wh-word in subject position without Auxiliary
+     - an optional NP-subject, if the WH-word is not the subject
+     - a VP that follows the rules of a regular VP
+     - some kind of optional Preposition, to allow for P-stranding
+     - a question mark to mark the sentence as an interrogative
+ 
+WH-word rule
+- wh-word/phrase has (^FOCUS) feature to mark it as being moved from its base position & also is constrained to be an interrogative pronoun
+- option 1: NP is (^SUBJ)
+   -  verb MUST be inflected: (^ VFORM) ~= inf
+   -  only the optionally-relative wh-words can be in this position (eg. whose cat/who appeared)
+-  Option 2: NP is from any other position and must thus have do-support (as I currently don't have any other auxiliaries)
+   -      
+   
 
 ### Future work
  - fronted PPs: "from where did Mary appear?"
