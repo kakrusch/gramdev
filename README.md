@@ -40,7 +40,7 @@ your implementation approach/design and the reasons for it (including usage of O
 
 
 ### Future work
- - fronted PPs: "from where did they go?"
+ - fronted PPs: "from where did Mary appear?"
 
 
 ## Files
