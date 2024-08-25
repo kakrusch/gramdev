@@ -43,6 +43,7 @@ your implementation approach/design and the reasons for it (including usage of O
 
 ### Future work
  - fronted PPs: "from where did Mary appear?"
+ - thematic role implementation: wh-words are constrained by the thematic roles they are able to ask about
 
 
 ## Files
