@@ -39,7 +39,7 @@ your implementation approach/design and the reasons for it (including usage of O
    - embedded wh-words
 
 
-Base:
+### Base:
 
 - on the basis of the grammar from exercise 2, but including correct XCOMP and COMP rules and words. Also making all Verbs using morphological parser and remove nouns
 
@@ -51,27 +51,21 @@ Other Lexicon Changes:
 - add inflected versions for do-support that agree with the sentence's subject 
 
 ### WH-words in the lexicon:
+- all wh-words are treated like pronouns, but have `(^ PRON-TYPE) = int`
+- I added an additional feature (^REL) that can be either "+" or "-", to specify wh-words that can also be relative pronouns. This difference is relevant because those pronouns that can be relative must have an NP-position (such as the subject or Object).
 
-
-Pronouns that can act as relative pronouns -> can come from subject or object (NP), but not OBL or ADJUNCT
+Pronouns that can act as relative pronouns -> can come from subject or object (must be NP) 
 - Who: personal pronoun -> 3rd sg agreement in SUBJ
 - Whose and Which: possessive -> agreement with noun in SUBJ
 - What: possessive and personal -> agreement like the counterparts
 
 pronouns that do not act as relative pronouns -> not from subject or OBJ, agreement with subject 
-- Where and When: personal
-- How and Why: personal
+- Where and When: personal -> can be within PP
+- How and Why: personal -> cannot come from PP/strand a P
 
 
-
-o	“what” “who” “whose” or “which” must come from NP
-	But can be in a PP
-	These are those that can also be relative
-o	“where” and “when” must be from some type of PP
-	Either full PP or within the PP
-o	“why” must have CP (COMP, XCOMP or adjunct)
-o	“how” can be PP or CP
-
+- Who: like regular personal pronouns, but is of the type that can be relative
+- Which and Whose: like possessive pronouns, but without PERSON or NUMBER features, as they don't have these features inherently and don'
 
 
 
