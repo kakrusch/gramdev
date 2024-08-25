@@ -4,7 +4,7 @@
 
 a short description of the phenomenon 
 
-- main clause wh-questions in English
+- main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the C-structure it belongs to.
 
 ## Motivation - why I chose this phenomenon 
 
@@ -33,17 +33,53 @@ your implementation approach/design and the reasons for it (including usage of O
       - OBJ: do-support if there is no other aux and main verb is in infinitival form
       - 
    - extraction from adjuncts
-
-   - 
      
    - extraction from PPs (with stranded P)
 
    - embedded wh-words
 
 
+Base:
+
+- on the basis of the grammar from exercise 2, but including correct XCOMP and COMP rules and words. Also making all Verbs using morphological parser and remove nouns
+
+- add Adjunct because-CP to base S rules, to have a hypothetical answer to "How" or "Why", add because to lexicon
+
+Other Lexicon Changes:
+
+- add a Question mark (?) that makes sentences interrogative type
+- add inflected versions for do-support that agree with the sentence's subject 
+
+### WH-words in the lexicon:
+
+
+Pronouns that can act as relative pronouns -> can come from subject or object (NP), but not OBL or ADJUNCT
+- Who: personal pronoun -> 3rd sg agreement in SUBJ
+- Whose and Which: possessive -> agreement with noun in SUBJ
+- What: possessive and personal -> agreement like the counterparts
+
+pronouns that do not act as relative pronouns -> not from subject or OBJ, agreement with subject 
+- Where and When: personal
+- How and Why: personal
+
+
+
+o	“what” “who” “whose” or “which” must come from NP
+	But can be in a PP
+	These are those that can also be relative
+o	“where” and “when” must be from some type of PP
+	Either full PP or within the PP
+o	“why” must have CP (COMP, XCOMP or adjunct)
+o	“how” can be PP or CP
+
+
+
+
 ### Future work
  - fronted PPs: "from where did Mary appear?"
  - thematic role implementation: wh-words are constrained by the thematic roles they are able to ask about
+
+
 
 
 ## Files
