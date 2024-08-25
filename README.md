@@ -31,8 +31,12 @@ your implementation approach/design and the reasons for it (including usage of O
       - OBJ: do-support if there is no other aux and main verb is in infinitival form
       - 
    - extraction from adjuncts
+
+   - 
      
    - extraction from PPs (with stranded P)
+
+   - embedded wh-words
 
 
 
