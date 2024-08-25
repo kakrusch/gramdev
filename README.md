@@ -16,6 +16,8 @@ What it is, why I chose it, why it is challenging, etc.
 
 your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuire design, etc), and the challenges that remain. You can have subheadings in this document.
 
+#extra errors: tense mismatches, trans-mismatches, POSS-WH mismatches (both ways), subj-obj-do-nodo, no ?, non-wh-structure
+
    - new rule for WHQ:
       -   rule consists of a VP and then allowed stuff before 
       -   wh-words are banned in declaratives and vice verse
