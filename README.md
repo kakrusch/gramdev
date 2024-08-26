@@ -1,16 +1,19 @@
-# gramdev
+# Grammar Development Final project
 
 ## Overview
 
 a short description of the phenomenon 
 
-- main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the C-structure it belongs to.
+- main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the C-structure it belongs to
+- implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
+- 
+
 
 ## Motivation - why I chose this phenomenon 
 
 What it is, why I chose it, why it is challenging, etc.
 
-- 
+- seems like a straight-forward phenomenon, but there is a lot of selectional properties to look out for and a lot more that I could not include in this project
 
 ## Implementation approach/design
 
@@ -93,9 +96,23 @@ WH-word rule
    -  verb MUST be inflected: (^ VFORM) ~= inf
    -  only the optionally-relative wh-words can be in this position (eg. whose cat/who appeared)
 -  Option 2: NP is from any other position and must thus have do-support (as I currently don't have any other auxiliaries)
-   -      
+   -  thus this option has an auxiliary that states the verb must be infinitival form: (^ VFORM) =c inf
+   -  There are then 4 options for the wh-word specified by functional uncertainty
+         1. (^ {XCOMP|COMP}* {XCOMP|COMP|OBJ2|OBL-TO|OBL}) = !): wh-word replaces any of the specified categories fully, and this origin might be embedded in higher complement clauses
+         2. (^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+ : wh-word can be an object, but only if it is an optionally-relative type 
+         3. !$(^ADJUNCT) @(OT-MARK Q-NREL) (!REL)=c- : non-relative pronouns can fully replace any adjunct (CP or PP)
+               - the OT mark marks it as the less preferred option if a position where it replaces an argument is available
+         4. (^ ADJUNCT: (<-PTYPE)=sem; OBJ)= ! @(OT-MARK Q-Ad): for most wh-words/phrases (except how and why) the wh-word can be in the object position of an adjunct PP, as specified by the off-path constraint that forces it to have a semantic preposition (which are specified at the end)
+               - the OT mark marks it as preferred over the other adjunct type, but not more than when it replaces an argument
    
 
+- PP:
+      - 1. If the wh-word is an OBL-TO, the "to" can be stranded
+      - 2. if the wh-word is an Oblique, the P can be stranded
+      - 3. If the wh-word is an adjunct, it can strand its P and thus specificy a pred type (except for how and why because of their lexicon)
+
+
+  
 ### Future work
  - fronted PPs: "from where did Mary appear?"
  - thematic role implementation: wh-words are constrained by the thematic roles they are able to ask about
