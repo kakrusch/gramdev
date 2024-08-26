@@ -112,7 +112,7 @@ wh_english.lfg  -> full grammar
 
 wh_testsuite.lfg  -> testsuite for the grammar
 
-xlerc         -> load grammar automatically and keyboard shortcuts
+xlerc         -> load grammar automatically and keyboard shortcuts (*g* to reload grammar, *t* to parse the testsuite)
 
 common.templates.lfg  -> use basic English templates
 
