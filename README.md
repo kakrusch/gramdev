@@ -37,7 +37,7 @@ Wh-words that cannot act as relative pronouns, at least not a referential one, a
 
 In the c-structure rules, I introduced a rule called WHQ, which specifies the structure of wh-questions. This rule is not called  SInt, as an English grammar would need a different rule for polar interrogatives, which have a different structure. The basic structure of the rule is as follows:
 
-     - Some kind of wh-word or phrase 
+     - Some kind of wh-word or phrase, with or without an auxiliary
      - An optional NP-subject, that is mandatory if the wh-phrase itseld is not the subject
      - A mandatory VP
      - Some kind of optional preposition, to allow for preposition stranding 
@@ -46,30 +46,26 @@ In the c-structure rules, I introduced a rule called WHQ, which specifies the st
 
 #### The WH-phrase options
 
-English wh-phrases consist of a single fronted wh-phrase. If there are multiple wh-phrases in a sentence, one of those is fronted, while the others remain in-situ. This is achieved in the current grammar by marking the fronted wh-phrase using (^FOCUS), which marks it as being moved from its base position into the interrogative sentence position. As only a single NP can be in this focused position, only one wh-phrase is fronted. This NP is also constr
+English wh-phrases consist of a single fronted wh-phrase. If there are multiple wh-phrases in a sentence, one of those is fronted, while the others remain in-situ. This is achieved in the current grammar by marking the fronted wh-phrase using (^FOCUS), which marks it as being moved from its base position into the interrogative sentence position. As only a single NP can be in this focused position, only one wh-phrase is fronted. This NP is also constrained to always contain an interrogative preposition. 
+
+There are then two overarching options for the fronted wh-phrase. If the wh-phrase is in subject position, the main verb is in
 
 
-- wh-word/phrase has (^FOCUS) feature to mark it as being moved from its base position & also is constrained to be an interrogative pronoun
-- there has to be one wh-word, but there cannot be more than one: if there are more they remain in-situ
-    - additional wh-words may remain in-situ, so long as a single word is fronted and all argument positions are filled
-    - 
+The wh-word selection also determines the structure of the rest of the sentence. The wh-word can either be in subject position, such that the main verb is inflected based on the wh-phrase, or the wh-word can have any other grammatical function, which leads to do-support and an uninflected main verb. The first option is defined by marking the focused NP as `(^SUBJ)` and forcing the main verb to be inflected using `(^ VFORM) ~= inf`. Further, as mentioned previously, only optionally relative pronouns can be in this position, which is marked using `(!REL)=c+`.
 
-The wh-word selection also determines the structure of the rest of the sentence. The wh-word can either be in Subject position, such that the main verb is inflected based on the wh-phrase, 
+The second option contains an `NP` and an `AUX` for do-support. The auxiliary specifies that the verb is uninflected using `(^ VFORM) =c inf`. There are then four options for which wh-words have which grammatical functions. These are defined using functional uncertainties and constrained using OT marks. 
 
- - some kind of wh-word: either a wh-word and do-support or a wh-word in subject position without Auxiliary
-- option 1: NP is (^SUBJ)
-   -  verb MUST be inflected: (^ VFORM) ~= inf
-   -  only the optionally-relative wh-words can be in this position (eg. whose cat/who appeared)
--  Option 2: NP is from any other position and must thus have do-support (as I currently don't have any other auxiliaries)
-   -  thus this option has an auxiliary that states the verb must be infinitival form: (^ VFORM) =c inf
-   -  There are then 4 options for the wh-word specified by functional uncertainty
-         1. (^ {XCOMP|COMP}* {XCOMP|COMP|OBJ2|OBL-TO|OBL}) = !): wh-word replaces any of the specified categories fully, and this origin might be embedded in higher complement clauses
-         2. (^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+ : wh-word can be an object, but only if it is an optionally-relative type 
-         3. !$(^ADJUNCT) @(OT-MARK Q-NREL) (!REL)=c- : non-relative pronouns can fully replace any adjunct (CP or PP)
-               - the OT mark marks it as the less preferred option if a position where it replaces an argument is available
-         4. (^ ADJUNCT: (<-PTYPE)=sem; OBJ)= ! @(OT-MARK Q-Ad): for most wh-words/phrases (except how and why) the wh-word can be in the object position of an adjunct PP, as specified by the off-path constraint that forces it to have a semantic preposition (which are specified at the end)
+The first option is specified using `(^ {XCOMP|COMP}* {OBJ2|OBL-TO|OBL}) = !)`. Any wh-word can fulfill any of the specified functions and can even be embedded within multiple CPs. The second option is `(^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+`, which allows only optionally relative wh-words to be in object position. The third option allows only non-relative type pronouns to replace any adjunct, using ` !$(^ADJUNCT) (!REL)=c- @(OT-MARK Q-NREL)`. The OT mark here makes sure that these parses are dispreferred over parses where the wh-phrase is an argument of the main verb. Non-relative type wh-words, but also the personal-pronoun-like version of *what* can be an argument of type CP, which is specified in `(^ {XCOMP|COMP}* {XCOMP|COMP}) = ! {(!REL)=c-|(! PRON-FORM) = what (! POSS PRED) ~= 'PRO'}`. Again, these can also be originally embedded in higher CPs. The final option 
+
+
+
+		| (^ ADJUNCT: (<-PTYPE)=sem; OBJ )= ! @(OT-MARK Q-Ad)} 
+
+
+         5. (^ ADJUNCT: (<-PTYPE)=sem; OBJ)= ! @(OT-MARK Q-Ad): for most wh-words/phrases (except how and why) the wh-word can be in the object position of an adjunct PP, as specified by the off-path constraint that forces it to have a semantic preposition (which are specified at the end)
                - the OT mark marks it as preferred over the other adjunct type, but not more than when it replaces an argument
-   
+
+
 
 - PP:
 
@@ -78,6 +74,10 @@ The wh-word selection also determines the structure of the rest of the sentence.
       - 2. if the wh-word is an Oblique, the P can be stranded
 
       - 3. If the wh-word is an adjunct, it can strand its P and thus specificy a pred type (except for how and why because of their lexicon)
+
+
+- note: in ditransitives without P stranding, there is ambiguity and multiple solutions, as the wh-word can refer to either OBJ, OBJ2 or OBL-TO, or just either OBJ2 or OBL-TO
+
 
 ### testsuite?
 
