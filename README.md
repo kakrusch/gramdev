@@ -107,8 +107,11 @@ WH-word rule
    
 
 - PP:
+
       - 1. If the wh-word is an OBL-TO, the "to" can be stranded
+  
       - 2. if the wh-word is an Oblique, the P can be stranded
+
       - 3. If the wh-word is an adjunct, it can strand its P and thus specificy a pred type (except for how and why because of their lexicon)
 
 
