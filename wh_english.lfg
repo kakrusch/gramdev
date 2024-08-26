@@ -38,11 +38,13 @@ Stop --> NP: (^ TOPIC) = !
 
 
 WHQ --> {NP: (^ FOCUS) = ! "wh-word is focused from some source to be in front"
-		{(^ {XCOMP|COMP}* {XCOMP|COMP|OBJ2|OBL-TO|OBL}) = ! "wh-word can be either of these"
+		{(^ {XCOMP|COMP}* {OBJ2|OBL-TO|OBL}) = ! "wh-word can be either of these"
 
 		| (^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+ "OBJ wh-word must be be relative-type pronoun"
 
-		| !$(^ADJUNCT) @(OT-MARK Q-NREL) (!REL)=c-   "wh-word can be adjunct if it does not have the option to be relative"
+		| !$(^ADJUNCT) (!REL)=c- @(OT-MARK Q-NREL)  "wh-word can be adjunct if it does not have the option to be relative"
+
+		| (^ {XCOMP|COMP}* {XCOMP|COMP}) = ! {(!REL)=c-|(! PRON-FORM) = what (! POSS PRED) ~= 'PRO'}
 
 		| (^ ADJUNCT: (<-PTYPE)=sem; OBJ )= ! @(OT-MARK Q-Ad)}  "disprefer question from adjuncts"
 
