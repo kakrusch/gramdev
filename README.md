@@ -1,6 +1,8 @@
 # Grammar Development Final project
 *_Kascha Kruschwitz_* 
 
+Github link: _________
+
 ## Overview and Motivation
 
 
@@ -15,44 +17,25 @@
 
 ## Implementation approach/design
 
-your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuire design, etc), and the challenges that remain. You can have subheadings in this document.
+your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuite design, etc), and the challenges that remain. You can have subheadings in this document.
 
-#extra errors: tense mismatches, trans-mismatches, POSS-WH mismatches (both ways), subj-obj-do-nodo, no ?, non-wh-structure
 
-   - new rule for WHQ:
-      -   rule consists of a VP and then allowed stuff before 
-      -   wh-words are banned in declaratives and vice verse
-
-   - wh-words as pronouns (only gender and number in specific cases)
-
-   - wh-word fronting via FOCUS and uncertainty paths
-
-   - difference between subject and object wh-word origin:
-
-      - SUBJ: main verb is inflected for case and number (usually 3rd person sg)
-
-      - OBJ: do-support if there is no other aux and main verb is in infinitival form
-      - 
-   - extraction from adjuncts
-     
-   - extraction from PPs (with stranded P)
-
-   - embedded wh-words
 
 
 ### Base:
 
 - on the basis of the grammar from exercise 2, but including correct XCOMP and COMP rules and words. Also making all Verbs using morphological parser and remove nouns
 
-- add Adjunct because-CP to base S rules, to have a hypothetical answer to "How" or "Why", add because to lexicon
 
 - in S's NP: (! (POSS) PRON-TYPE) ~= int
      - disallow interrogative type pronouns in SUBJ of normal sentence
+     - 
+- add Adjunct because-CP to base VP rules, to have a hypothetical answer to "How" or "Why", add "because" to lexicon
 
 Other Lexicon Changes:
 
 - add a Question mark (?) that makes sentences interrogative type
-- add inflected versions for do-support that agree with the sentence's subject 
+- add inflected versions of do for do-support that agree with the sentence's subject 
 
 ### WH-words in the lexicon:
 - all wh-words are treated like pronouns, but have `(^ PRON-TYPE) = int`
@@ -90,6 +73,8 @@ I introduced a rule called WHQ (WH-question), to generate wh-questions (as oppos
  
 WH-word rule
 - wh-word/phrase has (^FOCUS) feature to mark it as being moved from its base position & also is constrained to be an interrogative pronoun
+- there has to be one wh-word, but there cannot be more than one: if there are more they remain in-situ
+    - additional wh-words may remain in-situ, so long as a single word is fronted and all argument positions are filled
 - option 1: NP is (^SUBJ)
    -  verb MUST be inflected: (^ VFORM) ~= inf
    -  only the optionally-relative wh-words can be in this position (eg. whose cat/who appeared)
