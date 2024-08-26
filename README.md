@@ -122,4 +122,21 @@ WH-word rule
 
 ## Files
 
-List the files you have uploaded and their functions.
+wh_english.lfg  -> full grammar
+
+wh_testsuite.lfg  -> testsuite for the grammar
+
+xlerc         -> load grammar automatically and keyboard shortcuts
+
+common.templates.lfg  -> use basic English templates
+
+basic-parse-tok.fst  -> basic english tokenizer
+
+english.infl.patch.full.fst -> basic english analyser (detokenizer)
+
+
+
+
+
+
+
