@@ -5,14 +5,7 @@ Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrus
 
 ## Overview and Motivation
 
-This project focuses on English main-clause wh-questions, specifically focusing on the selectional properties and inflectional differences of different wh-words and the part of the sentence they are asking about.
-
-
-- implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
-- if asking about subject: inflected verb based on q-NP, if from any other position: do-support and infinitival verb
-- all the wh-words have their own properties (eg. some allow preposition stranding, some can be the subject etc..)
-- based on LFG implementations from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*
-
+This project focuses on English main-clause wh-questions, specifically focusing on the selectional properties and inflectional differences caused by different wh-words and the part of the sentence they are asking about. I implemented a rule for wh-questions and eight wh-words: *Who, Whose, Which, What, Where, When, How* and *Why*. In the rules there are differences based on whether the wh-word is the subject or any other grammatical function. If the wh-phrase is the subject, the main verb is inflected based on tense and the wh-phrase itself, such as in "Who appeared?" or "Whose cake appears?". If the wh-phrase is in any other grammatical function, the main verb is always infinitival and there is do-support, which is the mandatory insertion of a *do* auxiliary inflected based on the subject's features. Further, each wh-word has its own properties, which determine, for example, whether preposition stranding or the wh-word being a subject is allowed. The implementation is based on the ideas from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*.
 
 The phenomenon seemed relatively straightforward, but there were a lot of selectional properties to look out for and a lot more that I could not include in this project. I wanted to focus on this topic because I was aware of how wh-questions and their properties are explained using movement in Minimalism. With this project, I wanted to explore that same phenomenon but from the perspective of LFG, especially phenomena like wh-stranding and displaced arguments. Further, I saw this as an oportunity to explore different restrictors in XLE, to explain the selectional properties of each wh-word.
 
@@ -27,7 +20,7 @@ I implemented several basic but task-specific changes to the lexicon. Initially,
 ### WH-words in the lexicon:
 The first half of the implementation included adding wh-words to the lexicon, each with different specific properties. All wh-words are treated as pronouns, with `(^ PRED) = 'PRO'`. They pattern either like possessive or personal pronouns, but each have the property `(^ PRON-TYPE) = int` to mark them as interrogative. All wh-words also have both a capital and a lowercase version. I mainly used existing features from the XLE Documentation but implemented a `(^REL)= +/-` feature to specify those wh-words that can also be relative pronouns, such as in "Mary, **who** is a cat, appeared". This project does not implement relative clauses but the distinction is relevant, as those wh-words that are optionally relative can be used to ask about NPs in `SUBJ` or `OBJ` positions, whereas the other wh-words cannot. For example, "Who appeared?" is `+REL` and grammatical, but "Where appeared?" is `-REL` and ungrammatical.
 
-The wh-words that can act as relative pronouns and are specified as `(^REL)= +` are: *who, whose, which*, and *what*. As mentioned, these can ask about the `SUBJ` and `OBJ` of the sentence, but cannot come from adjuncts that do not have a preposition. *Who* uses the regular pronoun template but is specified as 3rd person sg, as this is how it agrees when in subject position. *Which* and *Whose* use the possessive pronoun structure, but are not specified for person or number, as they can combine with any N and, if present in subject position, agreement happens with the N's features, not the wh-word's. The final optionally relative wh-word is *what*, which can be either personal-like or possessive-like, and is thus specified as either like *who* or like *which/whose*.
+The wh-words that can act as relative pronouns and are specified as `(^REL)= +` are: *who, whose, which*, and *what*. As mentioned, these can ask about the `SUBJ` and `OBJ` of the sentence, but cannot come from adjuncts that do not have a preposition. *Who* uses the regular pronoun template but is specified as 3rd person sg, as this is how it agrees when in subject position. *Which* and *Whose* use the possessive pronoun structure, but are not specified for person or number, as they can combine with any N. The final optionally relative wh-word is *what*, which can be either personal-like or possessive-like, and is thus specified as either like *who* or like *which/whose*.
 
 
 Wh-words that cannot act as relative pronouns, at least not a referential one, and are specified as `(^REL)= -` include *where*, *when*, *why*, and *how*. All of these act like personal, not possessive, pronouns. Crucially, these cannot be the `SUBJ` or `OBJ` of the main verb, but can replace unspecified and non-PP adjuncts. This pattern is specified in the rules, but as a consequence they have no Person or Number features, as they are never in subject position and thus don't trigger agreement. All four wh-words thus have almost identical specifications except for one key difference. *Where* and *When* can replace CPs or PPs and can also be the object of a semantic PP, such as in "from where". *How* and *Why* can also replace CPs or PPs, but crucially cannot be the object of a semantic PP. Thus, they are specified with the additional Inside-Out Functional Uncertainty `~((ADJUNCT OBJ ^ ) PTYPE)`, which specifies exactly the aforementioned restriction, disallowing structures like "from how".
@@ -70,7 +63,7 @@ wh_english.lfg  -> full grammar
 
 wh_testsuite.lfg  -> testsuite for the grammar
 
-xlerc         -> load grammar automatically and keyboard shortcuts (*g* to reload grammar, *t* to parse the testsuite)
+xlerc   -> load grammar automatically and keyboard shortcuts (*g* to reload grammar, *t* to parse the testsuite)
 
 common.templates.lfg  -> use basic English templates
 
