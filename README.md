@@ -1,124 +1,58 @@
 # Grammar Development Final project
+*_Kascha Kruschwitz_* 
 
-## Overview
+Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrusch/gramdev.git)
 
-a short description of the phenomenon 
+## Overview and Motivation
 
-- main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the C-structure it belongs to
-- implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
-- 
+This project focuses on English main-clause wh-questions, specifically focusing on the selectional properties and inflectional differences caused by different wh-words and the part of the sentence they are asking about. I implemented a rule for wh-questions and eight wh-words: *Who, Whose, Which, What, Where, When, How* and *Why*. In the rules there are differences based on whether the wh-word is the subject or any other grammatical function. If the wh-phrase is the subject, the main verb is inflected based on tense and the wh-phrase itself, such as in "Who appeared?" or "Whose cake appears?". If the wh-phrase is in any other grammatical function, the main verb is always infinitival and there is do-support, which is the mandatory insertion of a *do* auxiliary inflected based on the subject's features. Further, each wh-word has its own properties, which determine, for example, whether preposition stranding or the wh-word being a subject is allowed. The implementation is based on the ideas from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*.
 
+The phenomenon seemed relatively straightforward, but there were a lot of selectional properties to look out for and a lot more that I could not include in this project. I wanted to focus on this topic because I was aware of how wh-questions and their properties are explained using movement in Minimalism. With this project, I wanted to explore that same phenomenon but from the perspective of LFG, especially phenomena like wh-stranding and displaced arguments. Further, I saw this as an oportunity to explore different restrictors in XLE, to explain the selectional properties of each wh-word.
 
-## Motivation - why I chose this phenomenon 
-
-What it is, why I chose it, why it is challenging, etc.
-
-- seems like a straight-forward phenomenon, but there is a lot of selectional properties to look out for and a lot more that I could not include in this project
 
 ## Implementation approach/design
 
-your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuire design, etc), and the challenges that remain. You can have subheadings in this document.
+In order to implement English wh-questions, I used my grammar from exercise two and extended it, including new phrase-structure rules and lexical entries. I included rules for XCOMP and COMP arguments and added the corresponding verbs to the lexicon. Further, verbal inflections are handled via the tokenizer and the Lexical Lookup Model is implemented, such that nouns are not in the lexicon and are instead recognized automatically. 
 
-#extra errors: tense mismatches, trans-mismatches, POSS-WH mismatches (both ways), subj-obj-do-nodo, no ?, non-wh-structure
+I implemented several basic but task-specific changes to the lexicon. Initially, I added the restriction `(! (POSS) PRON-TYPE) ~= int` to the base sentence's `(S)` subject NP, to disallow interrogative pronouns in the subject position of a regular sentence. To further ensure that the wh-questions are not parsed as regular sentences, a question mark was added to the lexicon, which specifies that a sentence has an interrogative sentence type. Another addition to the lexicon is different inflected versions of the auxiliary *do*, to allow do-support in wh-questions if the wh-word originates in a non-subject position. The last basic change is the addition of an adjunct CP with the complementizer *because* in the `VP` rule, to have an answer structure in place for responses to the wh-words *how* and *why*. 
 
-   - new rule for WHQ:
-      -   rule consists of a VP and then allowed stuff before 
-      -   wh-words are banned in declaratives and vice verse
-
-   - wh-words as pronouns (only gender and number in specific cases)
-
-   - wh-word fronting via FOCUS and uncertainty paths
-
-   - difference between subject and object wh-word origin:
-
-      - SUBJ: main verb is inflected for case and number (usually 3rd person sg)
-
-      - OBJ: do-support if there is no other aux and main verb is in infinitival form
-      - 
-   - extraction from adjuncts
-     
-   - extraction from PPs (with stranded P)
-
-   - embedded wh-words
-
-
-### Base:
-
-- on the basis of the grammar from exercise 2, but including correct XCOMP and COMP rules and words. Also making all Verbs using morphological parser and remove nouns
-
-- add Adjunct because-CP to base S rules, to have a hypothetical answer to "How" or "Why", add because to lexicon
-
-- in S's NP: (! (POSS) PRON-TYPE) ~= int
-     - disallow interrogative type pronouns in SUBJ of normal sentence
-
-Other Lexicon Changes:
-
-- add a Question mark (?) that makes sentences interrogative type
-- add inflected versions for do-support that agree with the sentence's subject 
 
 ### WH-words in the lexicon:
-- all wh-words are treated like pronouns, but have `(^ PRON-TYPE) = int`
-- all wh-words have capital and lowercased versions
-- I added an additional feature (^REL) that can be either "+" or "-", to specify wh-words that can also be relative pronouns. This difference is relevant because those pronouns that can be relative must have an NP-position (such as the subject or Object).
+The first half of the implementation included adding wh-words to the lexicon, each with different specific properties. All wh-words are treated as pronouns, with `(^ PRED) = 'PRO'`. They pattern either like possessive or personal pronouns, but each have the property `(^ PRON-TYPE) = int` to mark them as interrogative. All wh-words also have both a capital and a lowercase version. I mainly used existing features from the XLE Documentation but implemented a `(^REL)= +/-` feature to specify those wh-words that can also be relative pronouns, such as in "Mary, **who** is a cat, appeared". This project does not implement relative clauses but the distinction is relevant, as those wh-words that are optionally relative can be used to ask about NPs in `SUBJ` or `OBJ` positions, whereas the other wh-words cannot. For example, "Who appeared?" is `+REL` and grammatical, but "Where appeared?" is `-REL` and ungrammatical.
 
-Pronouns that can act as relative pronouns -> can come from subject or object (must be NP) 
-- Who: personal pronoun -> 3rd sg agreement in SUBJ
-- Whose and Which: possessive -> agreement with noun in SUBJ
-- What: possessive and personal -> agreement like the counterparts
+The wh-words that can act as relative pronouns and are specified as `(^REL)= +` are: *who, whose, which*, and *what*. As mentioned, these can ask about the `SUBJ` and `OBJ` of the sentence, but cannot come from adjuncts that do not have a preposition. *Who* uses the regular pronoun template but is specified as 3rd person sg, as this is how it agrees when in subject position. *Which* and *Whose* use the possessive pronoun structure, but are not specified for person or number, as they can combine with any N. The final optionally relative wh-word is *what*, which can be either personal-like or possessive-like, and is thus specified as either like *who* or like *which/whose*.
 
-pronouns that do not act as relative pronouns -> not from subject or OBJ, agreement with subject 
-- Where and When: personal -> can be within PP
-- How and Why: personal -> cannot come from PP/strand a P
 
-optionally relative pronouns:
-- Who: like regular personal pronouns, but is of the type that can be relative
-- Which and Whose: like possessive pronouns, but without PERSON or NUMBER features, as they don't have these features inherently and don't need to agree, as their sister-noun will agree if needed.
-- what: alternatively either like "who" or like "which/whose"
+Wh-words that cannot act as relative pronouns, at least not a referential one, and are specified as `(^REL)= -` include *where*, *when*, *why*, and *how*. All of these act like personal, not possessive, pronouns. Crucially, these cannot be the `SUBJ` or `OBJ` of the main verb, but can replace unspecified and non-PP adjuncts. This pattern is specified in the rules, but as a consequence they have no Person or Number features, as they are never in subject position and thus don't trigger agreement. All four wh-words thus have almost identical specifications except for one key difference. *Where* and *When* can replace CPs or PPs and can also be the object of a semantic PP, such as in "from where". *How* and *Why* can also replace CPs or PPs, but crucially cannot be the object of a semantic PP. Thus, they are specified with the additional Inside-Out Functional Uncertainty `~((ADJUNCT OBJ ^ ) PTYPE)`, which specifies exactly the aforementioned restriction, disallowing structures like "from how".
 
-  non-relative pronouns:
-  - where and when: like personal pronouns but also without agreement, as they are always from adjuncts and don't need to agree
-  - how and why: like where/when, but have an Inside-Out Functional uncertainty to designate them as not being the object of a preposition, and thus not allowing stranded Ps "Why did Mary appear from __?"
 
 ### WHQ Rule 
-I introduced a rule called WHQ (WH-question), to generate wh-questions (as opposed to polar questions).
 
-     - 
-- Base outline of the rule:
-     - some kind of wh-word: either a wh-word and do-support or a wh-word in subject position without Auxiliary
-     - an optional NP-subject, if the WH-word is not the subject
-     - a VP that follows the rules of a regular VP
-     - some kind of optional Preposition, to allow for P-stranding
-     - a question mark to mark the sentence as an interrogative
- 
-WH-word rule
-- wh-word/phrase has (^FOCUS) feature to mark it as being moved from its base position & also is constrained to be an interrogative pronoun
-- option 1: NP is (^SUBJ)
-   -  verb MUST be inflected: (^ VFORM) ~= inf
-   -  only the optionally-relative wh-words can be in this position (eg. whose cat/who appeared)
--  Option 2: NP is from any other position and must thus have do-support (as I currently don't have any other auxiliaries)
-   -  thus this option has an auxiliary that states the verb must be infinitival form: (^ VFORM) =c inf
-   -  There are then 4 options for the wh-word specified by functional uncertainty
-         1. (^ {XCOMP|COMP}* {XCOMP|COMP|OBJ2|OBL-TO|OBL}) = !): wh-word replaces any of the specified categories fully, and this origin might be embedded in higher complement clauses
-         2. (^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+ : wh-word can be an object, but only if it is an optionally-relative type 
-         3. !$(^ADJUNCT) @(OT-MARK Q-NREL) (!REL)=c- : non-relative pronouns can fully replace any adjunct (CP or PP)
-               - the OT mark marks it as the less preferred option if a position where it replaces an argument is available
-         4. (^ ADJUNCT: (<-PTYPE)=sem; OBJ)= ! @(OT-MARK Q-Ad): for most wh-words/phrases (except how and why) the wh-word can be in the object position of an adjunct PP, as specified by the off-path constraint that forces it to have a semantic preposition (which are specified at the end)
-               - the OT mark marks it as preferred over the other adjunct type, but not more than when it replaces an argument
-   
+In the c-structure rules, I introduced a rule called WHQ, which specifies the structure of wh-questions. This rule is not called  SInt, as an English grammar would need a different rule for polar interrogatives, which have a different structure. The basic structure of the rule is as follows:
 
-- PP:
+- Some kind of wh-word or phrase, with or without an auxiliary
+- An optional NP-subject, that is mandatory if the wh-phrase itseld is not the subject
+- A mandatory VP
+- Some kind of optional preposition, to allow for preposition stranding 
+- A mandatory question mark, to mark the sentence as an interrogative sentence
 
-      - 1. If the wh-word is an OBL-TO, the "to" can be stranded
-  
-      - 2. if the wh-word is an Oblique, the P can be stranded
 
-      - 3. If the wh-word is an adjunct, it can strand its P and thus specificy a pred type (except for how and why because of their lexicon)
+#### The WH-phrase 
 
+English wh-phrases consist of a single fronted wh-phrase. If there are multiple wh-phrases in a sentence, one of those is fronted, while the others remain in-situ. This is achieved in the current grammar by marking the fronted wh-phrase using (^FOCUS), which marks it as being moved from its base position into the interrogative sentence position. As only a single NP can be in this focused position, only one wh-phrase is fronted. This NP is also constrained to always contain an interrogative preposition. 
+
+There are then two overarching options for the fronted wh-phrase. The wh-word can either be in subject position, such that the main verb is inflected based on the wh-phrase, or the wh-word can have any other grammatical function, which leads to do-support and an uninflected main verb. The first option is defined by marking the focused NP as `(^SUBJ)` and forcing the main verb to be inflected using `(^ VFORM) ~= inf`. Further, as mentioned previously, only optionally relative pronouns can be in this position, which is marked using `(!REL)=c+`. 
+
+The second option contains an `NP` and an `AUX` for do-support. The auxiliary specifies that the verb is uninflected using `(^ VFORM) =c inf`. There are then four options for which wh-words have which grammatical functions. These are defined using functional uncertainties and constrained using OT marks. The first option is specified using `(^ {XCOMP|COMP}* {OBJ2|OBL-TO|OBL}) = !)`. Any wh-word can fulfill any of the specified functions and can even be embedded within multiple CPs. The second option is `(^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+`, which allows only optionally relative wh-words to be in object position. The third option allows only non-relative type pronouns to replace any adjunct, using ` !$(^ADJUNCT) (!REL)=c- @(OT-MARK Q-NREL)`. The OT mark here makes sure that these parses are dispreferred over parses where the wh-phrase is an argument of the main verb. Non-relative type wh-words, but also the personal-pronoun-like version of *what* can be an argument of type CP, which is specified in `(^ {XCOMP|COMP}* {XCOMP|COMP}) = ! {(!REL)=c-|(! PRON-FORM) = what (! POSS PRED) ~= 'PRO'}`. Again, these can also originally be embedded in higher CPs. Finally, most wh-words, except *how* and *why*, can be in object position of an adjunct PP if there is an overt preposition, such as in "from where". This is specified by an off-path constraint that forces the presence of a semantic PP, and thus some preposition: `(^ ADJUNCT: (<-PTYPE)=sem; OBJ )= !`. This option also contains an OT mark that prefers this option over the other types of adjuncts but ensures that the satisfaction of an argument position is preferred over being an adjunct.
+
+
+#### Preposition stranding
+The presence of a PP with a preposition and a wh-phrase is so far only possible in-situ. However, the wh-phrase may also be fronted, but leave the preposition behind in its base position, such as in "Where did he appear from?". This is especially important for the PP adjuncts, which must be defined as semantic somehow. Thus, an optional preposition can be inserted after the VP. If available as an argument, the stranded preposition forces the `OBL` or `OBL-TO` function on the wh-phrase. If neither is available, the wh-word is treated as part of an adjunct PP. *why* and *how* are disallowed with preposition stranding, as they are specified in the lexicon as not being able to combine with a preposition.
 
   
 ### Future work
- - fronted PPs: "from where did Mary appear?"
- - thematic role implementation: wh-words are constrained by the thematic roles they are able to ask about
+
+The presented projects only scratches the surface of the constraints on the realization of each wh-word. Future projects should take more features and possible constraints into account, such as specifying the thematic roles that wh-words can occupy and which main verbs can license which wh-word. Further, there are other structures, such as fronted PPs with wh-phrases ("from where did Mary appear?") and embedded wh-phrases ("I wonder where Mary appeared"), which could act as extensions to the current project.
 
 
 
@@ -129,7 +63,7 @@ wh_english.lfg  -> full grammar
 
 wh_testsuite.lfg  -> testsuite for the grammar
 
-xlerc         -> load grammar automatically and keyboard shortcuts
+xlerc   -> load grammar automatically and keyboard shortcuts (*g* to reload grammar, *t* to parse the testsuite)
 
 common.templates.lfg  -> use basic English templates
 
@@ -139,7 +73,9 @@ english.infl.patch.full.fst -> basic english analyser (detokenizer)
 
 
 
+## Sources:
+Dalrymple, M. (2024). *Handbook of Lexical Functional Grammar*. Language Science Press.
 
+Butt, M., King, T., Niño, M. and Segond F. (1999). *A Grammar Writer’s Cookbook*. CSLI Publications.
 
-
-
+Crouch, D., Dalrymple, M., Kaplan, R., King, T., Maxwell, J. and Newman, P., (1993). *XLE Documentation*. Palo Alto Research Center (PARC).
