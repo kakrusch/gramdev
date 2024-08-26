@@ -9,7 +9,7 @@ Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrus
 - main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the structure it asks about
 - implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
 - if asking about subject: inflected verb based on q-NP, if from any other position: do-support and infinitival verb
-- all the wh-words have their own properties
+- all the wh-words have their own properties (eg. some allow preposition stranding, some can be the subject etc..)
 - based on LFG implementations from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*
 
 
@@ -30,24 +30,33 @@ The first half of the implementation included adding wh-words to the lexicon, ea
 The wh-words that can act as relative pronouns and are specified as `(^REL)= +` are: *who, whose, which*, and *what*. As mentioned, these can ask about the `SUBJ` and `OBJ` of the sentence, but cannot come from adjuncts that do not have a preposition. *Who* uses the regular pronoun template but is specified as 3rd person sg, as this is how it agrees when in subject position. *Which* and *Whose* use the possessive pronoun structure, but are not specified for person or number, as they can combine with any N and, if present in subject position, agreement happens with the N's features, not the wh-word's. The final optionally relative wh-word is *what*, which can be either personal-like or possessive-like, and is thus specified as either like *who* or like *which/whose*.
 
 
-Wh-words that cannot act as relative pronouns, at least not a referential one, and are specified as `(^REL)= -` include *where*, *when*, *why*, and *how*. All of these act like personal, not possessive, pronouns. Crucially, these cannot be the `SUBJ` or `OBJ` of the main verb, but can replace unspecified and non-PP adjuncts. This pattern is specified in the rules, but as a consequence they have no Person or Number features, as they are never in subject position and thus don't trigger agreement. All four wh-words thus have almost identical specifications except for one key difference. *Where* and *When* can replace CPs or PPs and can also be the object of a semantic PP, such as in "from where". *How* and *Why* can also replace CPs or PPs, but crucially cannot be the object of a semantic PP. Thus, they are specified with the additional Inside-Out Functional Uncertainty `~((ADJUNCT OBJ ^ ) PTYPE)`, that specifies exactly the aforementioned restriction, disallowing structures like "from how".
+Wh-words that cannot act as relative pronouns, at least not a referential one, and are specified as `(^REL)= -` include *where*, *when*, *why*, and *how*. All of these act like personal, not possessive, pronouns. Crucially, these cannot be the `SUBJ` or `OBJ` of the main verb, but can replace unspecified and non-PP adjuncts. This pattern is specified in the rules, but as a consequence they have no Person or Number features, as they are never in subject position and thus don't trigger agreement. All four wh-words thus have almost identical specifications except for one key difference. *Where* and *When* can replace CPs or PPs and can also be the object of a semantic PP, such as in "from where". *How* and *Why* can also replace CPs or PPs, but crucially cannot be the object of a semantic PP. Thus, they are specified with the additional Inside-Out Functional Uncertainty `~((ADJUNCT OBJ ^ ) PTYPE)`, which specifies exactly the aforementioned restriction, disallowing structures like "from how".
 
 
-### WHQ Rule - another ROOT option
-I introduced a rule called WHQ (WH-question), to generate wh-questions (as opposed to polar questions).
+### WHQ Rule 
 
-     - 
-- Base outline of the rule:
-     - some kind of wh-word: either a wh-word and do-support or a wh-word in subject position without Auxiliary
-     - an optional NP-subject, if the WH-word is not the subject
-     - a VP that follows the rules of a regular VP
-     - some kind of optional Preposition, to allow for P-stranding
-     - a question mark to mark the sentence as an interrogative
- 
-WH-word rule
+In the c-structure rules, I introduced a rule called WHQ, which specifies the structure of wh-questions. This rule is not called  SInt, as an English grammar would need a different rule for polar interrogatives, which have a different structure. The basic structure of the rule is as follows:
+
+     - Some kind of wh-word or phrase 
+     - An optional NP-subject, that is mandatory if the wh-phrase itseld is not the subject
+     - A mandatory VP
+     - Some kind of optional preposition, to allow for preposition stranding 
+     - A mandatory question mark, to mark the sentence as an interrogative sentence
+
+
+#### The WH-phrase options
+
+English wh-phrases consist of a single fronted wh-phrase. If there are multiple wh-phrases in a sentence, one of those is fronted, while the others remain in-situ. This is achieved in the current grammar by marking the fronted wh-phrase using (^FOCUS), which marks it as being moved from its base position into the interrogative sentence position. As only a single NP can be in this focused position, only one wh-phrase is fronted. This NP is also constr
+
+
 - wh-word/phrase has (^FOCUS) feature to mark it as being moved from its base position & also is constrained to be an interrogative pronoun
 - there has to be one wh-word, but there cannot be more than one: if there are more they remain in-situ
     - additional wh-words may remain in-situ, so long as a single word is fronted and all argument positions are filled
+    - 
+
+The wh-word selection also determines the structure of the rest of the sentence. The wh-word can either be in Subject position, such that the main verb is inflected based on the wh-phrase, 
+
+ - some kind of wh-word: either a wh-word and do-support or a wh-word in subject position without Auxiliary
 - option 1: NP is (^SUBJ)
    -  verb MUST be inflected: (^ VFORM) ~= inf
    -  only the optionally-relative wh-words can be in this position (eg. whose cat/who appeared)
