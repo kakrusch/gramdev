@@ -1,0 +1,261 @@
+# wh-words and their properties:
+    # who (+what)
+    # whose and which are identical (+what)
+    # where and when are identical
+    # how and why are identical
+
+# who
+# 1 SUBJ-WH INTRANSITIVE
+
+Who sleeps?
+
+# 2 SUBJ-WH TRANSITIVE - past
+
+Who ate the cake?
+
+# 3 SUBJ-WH TRANSITIVE - present
+
+Who eats the cake?
+
+# 4 OBJ-WH TRANS
+
+Who did Mary like?
+
+# 5 OBJ-WH DITRANS
+
+Who does Mary give to John?
+
+# 6 OBL-ON-WH with stranded P
+
+Who did Mary wait on?
+
+# 7 ADJUNCT-WH with stranded P
+
+Who did Mary wait for?
+
+# 8 OBL-TO-WH with stranded P
+
+Who did Mary give the cake to?
+
+# 9 COMP-OBJ-WH
+
+Who does John think that Mary likes?
+
+# 10 embedded COMP_OBJ-WH
+
+Who does John say that the banana thinks that Mary likes?
+
+# 11 Incoherent: 'Who' is not possessive
+
+Who cake did Mary eat?
+
+# 12 Incoherent: Who cannot be an Adjunct
+
+Who did Mary eat the cake?
+
+
+# which - possessive
+# 13 SUBJ-WH INTRANSITIVE
+
+Which cake appears?
+
+# 14 SUBJ-WH TRANSITIVE (2 answers because tense is not specified)
+
+Which banana caught the cake?
+
+# 15 OBJ-WH TRANSITIVE
+
+Which cake did Mary catch?
+
+# 16 DITRANSITIVE either OBJ, OBJ2 or OBL-TO (3 answers)
+
+Which cake does Mary give John?
+
+# 17 DITRANSITIVE-OBJ
+
+Which cake does Mary give to John?
+
+# 18 Incomplete: requires an N
+
+Which did Mary eat?
+
+
+# whose - the same as which
+# 19 OBJ-WH TRANSITIVE
+
+Whose cake did Mary catch?
+
+# what - like which and who
+
+# 20 non-possessive OBJ-TRANS
+
+What did Mary catch?
+
+# 21 possessive OBJ-TRANS
+
+What cake did Mary eat?
+
+# 22 DITRANSITIVE either OBJ, OBJ2 or OBL-TO (3 answers)
+
+What does Mary give John?
+
+# 23 DITRANSITIVE-OBJ
+
+What does Mary give to John?
+
+
+# where
+# 24 ADJUNCT (PP)
+
+Where did Mary eat the cake?
+
+# 25 ADJUNCT-PP with stranded P
+
+Where did Mary appear from?
+
+# 26 Inconsistent: SUBJ-WH must not be "Where"
+
+Where appears?
+
+# 27 Inconsistent: OBJ-WH must not be "Where"
+
+Where does Mary like?
+
+# 28 DITRANSITIVE either OBJ2 or OBL-TO (2 Answers)
+
+Where does Mary give the cake?
+
+# 29 DITRANSITIVE OBL-TO
+
+Where does Mary give the cake to?
+
+# 30 ADJUNCT-WH (with XCOMP in between)
+
+Where does Mary persuade John to catch the cake?
+
+# 31 Incomplete: "Where" cannot be OBJ
+
+Where does Mary persuade to catch the cake?
+
+# 32 Incomplete: missing S in CP, "Where" is an NP
+
+Where does Mary think that?
+
+# 33 ADJUNCT INTRANSITIVE
+
+Where does Mary jump?
+
+# 34 ADJUNCT INTRANSITIVE with stranded P
+
+Where does Mary jump from?
+
+
+# when - same as where
+# 35
+
+When did Mary eat the cake?
+
+
+# why
+# 36 ADJUNCT INTRANS "eat"
+
+Why did Mary eat?
+
+# 37 ADJUNCT
+
+Why did Mary eat the cake?
+
+# 38 Incomplete: "Why" cannot be OBJ to "catch"
+
+Why did Mary catch?
+
+# 39 ADJUNCT
+
+Why did Mary persuade the cake to appear?
+
+# 40  Inconsistent: why cannot have P
+
+Why did Mary appear to?
+
+# 41  Inconsistent: with do-support, main verb must be infinitival
+
+Why did Mary ate?
+
+
+# how - same as "Why"
+# 42 ADJUNCT
+
+How did Mary eat?
+
+
+# multiWH
+# 43 OBJ-WH (what) and OBJ2-WH (who)
+
+What does Mary give who?
+
+# 44 OBJ-WH (who) and OBJ2-WH (what)
+
+Who does Mary give what?
+
+# 45 OBJ-WH (what) and OBL-TO-WH (who)
+
+What does Mary give to who?
+
+# 46 (2 parses because tense, like 14)
+
+Who liked which cake?
+
+# 47 Incomplete: both wh-words cannot be fronted
+
+Which cake who like?
+
+# 48 fronted ADJUNCT ("When") and OBJ-WH ("Whose cake")
+
+When did Mary eat whose cake?
+
+# 49 Inconsistent: "When" cannot be OBJ
+
+Whose cake did Mary eat when?
+
+# 50 Incomplete: both wh-words cannot be fronted
+
+When whose cake did Mary eat?
+
+
+# extra errors
+# 51 Inconsistent: "eat" must agree with 3rd sg
+
+Who eat the cake?
+
+# 52 Incomplete: missing do-support
+
+Where Mary appears?
+
+# 53 Incomplete: WHQ requires fronted wh-word
+
+did Mary eat what?
+
+# 54 Incomplete: WHQ requires fronted wh-word
+
+Mary eats what?
+
+# 55 Incomplete: WHQ requires question mark
+
+Who sleeps.
+
+# 56 Inconsistent: do must agree with SUBJ
+
+What do Mary eat?
+
+# 57 Inconsistent: do must agree with SUBJ and eat must be infinitival
+
+What does you ate?
+
+# 58 Incoherent: "What" must not be ADJUNCT and must be either OBJ or SUBJ
+
+What did Mary eat cake?
+
+# 59 Incoherent: "What" must be SUBJ
+
+What did Mary appear?
+

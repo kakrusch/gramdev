@@ -1,0 +1,29 @@
+#set encoding to utf-8
+set-character-encoding stdio utf-8
+
+# set timeout lower; amounts are in seconds
+set timeout 15
+
+#For output window
+set semwindowtop 0
+
+#provide window for output
+#stdout not tested
+set semDisplay window
+#set semDisplay stdout
+
+
+
+set defaultParser wh_english.lfg
+
+create-parser wh_english.lfg
+
+
+proc g {} {create-parser wh_english.lfg }
+proc t {} {parse-testfile wh_testsuite.lfg }
+
+
+#set font
+set outputfont Courir
+set fontsize 18
+
