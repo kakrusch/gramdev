@@ -5,17 +5,17 @@ Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrus
 
 ## Overview and Motivation
 
+This project focuses on English main-clause wh-questions, specifically focusing on the selectional properties and inflectional differences of different wh-words and the part of the sentence they are asking about.
 
-- main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the structure it asks about
+
 - implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
 - if asking about subject: inflected verb based on q-NP, if from any other position: do-support and infinitival verb
 - all the wh-words have their own properties (eg. some allow preposition stranding, some can be the subject etc..)
 - based on LFG implementations from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*
 
 
-- Motivation: seems like a straight-forward phenomenon, but there is a lot of selectional properties to look out for and a lot more that I could not include in this project
-- wanted to use this as an opportunity to explore how to use different restrictors in XLE
-- wanted to understand LFG more, especially how it deals with phenomena that in Minimalism are due to movement, such as wh-movement and preposition-stranding
+The phenomenon seemed relatively straightforward, but there were a lot of selectional properties to look out for and a lot more that I could not include in this project. I wanted to focus on this topic because I was aware of how wh-questions and their properties are explained using movement in Minimalism. With this project, I wanted to explore that same phenomenon but from the perspective of LFG, especially phenomena like wh-stranding and displaced arguments. Further, I saw this as an oportunity to explore different restrictors in XLE, to explain the selectional properties of each wh-word.
+
 
 ## Implementation approach/design
 
