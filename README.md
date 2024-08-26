@@ -6,7 +6,7 @@ Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrus
 ## Overview and Motivation
 
 
-- main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the C-structure it belongs to
+- main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the structure it asks about
 - implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
 - based on LFG implementations from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*
 
