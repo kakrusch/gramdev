@@ -1,20 +1,17 @@
 # Grammar Development Final project
 *_Kascha Kruschwitz_* 
 
-## Overview
+## Overview and Motivation
 
-a short description of the phenomenon 
 
 - main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the C-structure it belongs to
 - implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
 - based on LFG implementations from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*
 
 
-## Motivation - why I chose this phenomenon 
-
-What it is, why I chose it, why it is challenging, etc.
-
-- seems like a straight-forward phenomenon, but there is a lot of selectional properties to look out for and a lot more that I could not include in this project
+- Motivation: seems like a straight-forward phenomenon, but there is a lot of selectional properties to look out for and a lot more that I could not include in this project
+- wanted to use this as an opportunity to explore how to use different restrictors in XLE
+- wanted to understand LFG more, especially how it deals with phenomena that in Minimalism are due to movement, such as wh-movement and preposition-stranding
 
 ## Implementation approach/design
 
