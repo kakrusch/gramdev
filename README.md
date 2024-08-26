@@ -17,14 +17,11 @@ Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrus
 
 ## Implementation approach/design
 
-your implementation approach/design and the reasons for it (including usage of OT marks, restriction operators, testsuite design, etc), and the challenges that remain. You can have subheadings in this document.
+In order to implement English wh-questions, I used my grammar from exercise two and extended it, including new phrase-structure rules and lexical entries. I included rules for XCOMP and COMP arguments and added the corresponding verbs to the lexicon. Further, verbal inflections are handled via the tokenizer and the Lexical Lookup Model is implemented, such that nouns are not in the lexicon and are instead recognized automatically. 
 
-
-
+I implemented several basic but task-specific changes to the lexicon. Initially `(! (POSS) PRON-TYPE) ~= int`
 
 ### Base:
-
-- on the basis of the grammar from exercise 2, but including correct XCOMP and COMP rules and words. Also making all Verbs using morphological parser and remove nouns
 
 
 - in S's NP: (! (POSS) PRON-TYPE) ~= int
@@ -60,7 +57,7 @@ optionally relative pronouns:
   - where and when: like personal pronouns but also without agreement, as they are always from adjuncts and don't need to agree
   - how and why: like where/when, but have an Inside-Out Functional uncertainty to designate them as not being the object of a preposition, and thus not allowing stranded Ps "Why did Mary appear from __?"
 
-### WHQ Rule 
+### WHQ Rule - another ROOT option
 I introduced a rule called WHQ (WH-question), to generate wh-questions (as opposed to polar questions).
 
      - 
@@ -97,6 +94,7 @@ WH-word rule
 
       - 3. If the wh-word is an adjunct, it can strand its P and thus specificy a pred type (except for how and why because of their lexicon)
 
+### testsuite?
 
   
 ### Future work
