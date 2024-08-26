@@ -6,7 +6,7 @@ a short description of the phenomenon
 
 - main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the C-structure it belongs to
 - implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
-- 
+- based on LFG implementations from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*
 
 
 ## Motivation - why I chose this phenomenon 
@@ -139,7 +139,10 @@ english.infl.patch.full.fst -> basic english analyser (detokenizer)
 
 
 
+## Sources:
+Dalrymple, M. (2024). *Handbook of Lexical Functional Grammar*. Language Science Press.
 
+Butt, King, Niño and Segond (1999). *A Grammar Writer’s Cookbook*. CSLI Publications.
 
 
 
