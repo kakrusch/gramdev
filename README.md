@@ -19,20 +19,9 @@ Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrus
 
 In order to implement English wh-questions, I used my grammar from exercise two and extended it, including new phrase-structure rules and lexical entries. I included rules for XCOMP and COMP arguments and added the corresponding verbs to the lexicon. Further, verbal inflections are handled via the tokenizer and the Lexical Lookup Model is implemented, such that nouns are not in the lexicon and are instead recognized automatically. 
 
-I implemented several basic but task-specific changes to the lexicon. Initially `(! (POSS) PRON-TYPE) ~= int`
-
-### Base:
+I implemented several basic but task-specific changes to the lexicon. Initially, I added the restriction `(! (POSS) PRON-TYPE) ~= int` to the base sentence's (`S`) subject NP, to disallow interrogative pronouns in the subject position of a regular sentence. To further ensure that the wh-questions are not parsed as regular sentences, a question mark was added to the lexicon, which specifies that a sentence has an interrogative sentence type. Another addition to the lexicon is different inflected versions of the auxiliary *do*, to allow do-support in wh-questions if the wh-word originates in a non-subject position. The last basic change is the addition of an adjunct CP with the complementizer *because* in the `VP` rule, to have an answer structure in place for responses to the wh-words *how* and *why*. 
 
 
-- in S's NP: (! (POSS) PRON-TYPE) ~= int
-     - disallow interrogative type pronouns in SUBJ of normal sentence
-     - 
-- add Adjunct because-CP to base VP rules, to have a hypothetical answer to "How" or "Why", add "because" to lexicon
-
-Other Lexicon Changes:
-
-- add a Question mark (?) that makes sentences interrogative type
-- add inflected versions of do for do-support that agree with the sentence's subject 
 
 ### WH-words in the lexicon:
 - all wh-words are treated like pronouns, but have `(^ PRON-TYPE) = int`
