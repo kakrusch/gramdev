@@ -25,22 +25,13 @@ I implemented several basic but task-specific changes to the lexicon. Initially,
 
 
 ### WH-words in the lexicon:
-The first half of the implementation included adding wh-words to the lexicon, each with different specific properties. All wh-words are treated as pronouns, with properties like either possessive or personal pronouns, but each with the property `(^ PRON-TYPE) = int` to mark them as interrogative. All wh-words also have both a capital and a lowercase version. I mainly used existing features from the XLE Documentation but implemented a `(^REL)= +/-` feature to specify those wh-words that can also be relative pronouns, such as in "Mary, **who** is a cat, appeared". This project does not implement relative clauses but the distinction is relevant, as those wh-words that are optionally relative can be used to ask about NPs in `SUBJ` or `OBJ` positions, whereas the other wh-words cannot. For example, "Who appeared?" is `+REL` and grammatical, but "Where appeared?" is `-REL` and ungrammatical.
+The first half of the implementation included adding wh-words to the lexicon, each with different specific properties. All wh-words are treated as pronouns, with `(^ PRED) = 'PRO'`. They pattern either like possessive or personal pronouns, but each have the property `(^ PRON-TYPE) = int` to mark them as interrogative. All wh-words also have both a capital and a lowercase version. I mainly used existing features from the XLE Documentation but implemented a `(^REL)= +/-` feature to specify those wh-words that can also be relative pronouns, such as in "Mary, **who** is a cat, appeared". This project does not implement relative clauses but the distinction is relevant, as those wh-words that are optionally relative can be used to ask about NPs in `SUBJ` or `OBJ` positions, whereas the other wh-words cannot. For example, "Who appeared?" is `+REL` and grammatical, but "Where appeared?" is `-REL` and ungrammatical.
 
 The wh-words that can act as relative pronouns and are specified as `(^REL)= +` are: *who, whose, which*, and *what*. As mentioned, these can ask about the `SUBJ` and `OBJ` of the sentence, but cannot come from adjuncts that do not have a preposition. *Who* uses the regular pronoun template but is specified as 3rd person sg, as this is how it agrees when in subject position. *Which* and *Whose* use the possessive pronoun structure, but are not specified for person or number, as they can combine with any N and, if present in subject position, agreement happens with the N's features, not the wh-word's. The final optionally relative wh-word is *what*, which can be either personal-like or possessive-like, and is thus specified as either like *who* or like *which/whose*.
 
 
-Wh-words that cannot act as relative pronouns, at least not a referential one, include *where*, *when*, *why*, and *how*. Crucially, these cannot be a `SUBJ` or `OBJ`, but can replace unspecified and non-PP adjuncts. All of these act like personal pronouns, but have no Person or Number features, as they are never in subject position and thus don't trigger agreement. *Where* and *When* can replace CPs or PPs and can also be the object of a semantic PP, such as in "from where`". 
+Wh-words that cannot act as relative pronouns, at least not a referential one, and are specified as `(^REL)= -` include *where*, *when*, *why*, and *how*. All of these act like personal, not possessive, pronouns. Crucially, these cannot be the `SUBJ` or `OBJ` of the main verb, but can replace unspecified and non-PP adjuncts. This pattern is specified in the rules, but as a consequence they have no Person or Number features, as they are never in subject position and thus don't trigger agreement. All four wh-words thus have almost identical specifications except for one key difference. *Where* and *When* can replace CPs or PPs and can also be the object of a semantic PP, such as in "from where". *How* and *Why* can also replace CPs or PPs, but crucially cannot be the object of a semantic PP. Thus, they are specified with the additional Inside-Out Functional Uncertainty `~((ADJUNCT OBJ ^ ) PTYPE)`, that specifies exactly the aforementioned restriction, disallowing structures like "from how".
 
-
-pronouns that do not act as relative pronouns
-- Where and When:  can be within PP
-- How and Why:  cannot come from PP/strand a P
-
-
-  non-relative pronouns:
-  - where and when: like personal pronouns but also without agreement, as they are always from adjuncts and don't need to agree
-  - how and why: like where/when, but have an Inside-Out Functional uncertainty to designate them as not being the object of a preposition, and thus not allowing stranded Ps "Why did Mary appear from __?"
 
 ### WHQ Rule - another ROOT option
 I introduced a rule called WHQ (WH-question), to generate wh-questions (as opposed to polar questions).
