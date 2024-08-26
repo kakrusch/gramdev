@@ -44,47 +44,22 @@ In the c-structure rules, I introduced a rule called WHQ, which specifies the st
 - A mandatory question mark, to mark the sentence as an interrogative sentence
 
 
-#### The WH-phrase options
+#### The WH-phrase 
 
 English wh-phrases consist of a single fronted wh-phrase. If there are multiple wh-phrases in a sentence, one of those is fronted, while the others remain in-situ. This is achieved in the current grammar by marking the fronted wh-phrase using (^FOCUS), which marks it as being moved from its base position into the interrogative sentence position. As only a single NP can be in this focused position, only one wh-phrase is fronted. This NP is also constrained to always contain an interrogative preposition. 
 
-There are then two overarching options for the fronted wh-phrase. If the wh-phrase is in subject position, the main verb is in
+There are then two overarching options for the fronted wh-phrase. The wh-word can either be in subject position, such that the main verb is inflected based on the wh-phrase, or the wh-word can have any other grammatical function, which leads to do-support and an uninflected main verb. The first option is defined by marking the focused NP as `(^SUBJ)` and forcing the main verb to be inflected using `(^ VFORM) ~= inf`. Further, as mentioned previously, only optionally relative pronouns can be in this position, which is marked using `(!REL)=c+`. 
+
+The second option contains an `NP` and an `AUX` for do-support. The auxiliary specifies that the verb is uninflected using `(^ VFORM) =c inf`. There are then four options for which wh-words have which grammatical functions. These are defined using functional uncertainties and constrained using OT marks. The first option is specified using `(^ {XCOMP|COMP}* {OBJ2|OBL-TO|OBL}) = !)`. Any wh-word can fulfill any of the specified functions and can even be embedded within multiple CPs. The second option is `(^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+`, which allows only optionally relative wh-words to be in object position. The third option allows only non-relative type pronouns to replace any adjunct, using ` !$(^ADJUNCT) (!REL)=c- @(OT-MARK Q-NREL)`. The OT mark here makes sure that these parses are dispreferred over parses where the wh-phrase is an argument of the main verb. Non-relative type wh-words, but also the personal-pronoun-like version of *what* can be an argument of type CP, which is specified in `(^ {XCOMP|COMP}* {XCOMP|COMP}) = ! {(!REL)=c-|(! PRON-FORM) = what (! POSS PRED) ~= 'PRO'}`. Again, these can also originally be embedded in higher CPs. Finally, most wh-words, except *how* and *why*, can be in object position of an adjunct PP if there is an overt preposition, such as in "from where". This is specified by an off-path constraint that forces the presence of a semantic PP, and thus some preposition: `(^ ADJUNCT: (<-PTYPE)=sem; OBJ )= !`. This option also contains an OT mark that prefers this option over the other types of adjuncts but ensures that the satisfaction of an argument position is preferred over being an adjunct.
 
 
-The wh-word selection also determines the structure of the rest of the sentence. The wh-word can either be in subject position, such that the main verb is inflected based on the wh-phrase, or the wh-word can have any other grammatical function, which leads to do-support and an uninflected main verb. The first option is defined by marking the focused NP as `(^SUBJ)` and forcing the main verb to be inflected using `(^ VFORM) ~= inf`. Further, as mentioned previously, only optionally relative pronouns can be in this position, which is marked using `(!REL)=c+`.
-
-The second option contains an `NP` and an `AUX` for do-support. The auxiliary specifies that the verb is uninflected using `(^ VFORM) =c inf`. There are then four options for which wh-words have which grammatical functions. These are defined using functional uncertainties and constrained using OT marks. 
-
-The first option is specified using `(^ {XCOMP|COMP}* {OBJ2|OBL-TO|OBL}) = !)`. Any wh-word can fulfill any of the specified functions and can even be embedded within multiple CPs. The second option is `(^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+`, which allows only optionally relative wh-words to be in object position. The third option allows only non-relative type pronouns to replace any adjunct, using ` !$(^ADJUNCT) (!REL)=c- @(OT-MARK Q-NREL)`. The OT mark here makes sure that these parses are dispreferred over parses where the wh-phrase is an argument of the main verb. Non-relative type wh-words, but also the personal-pronoun-like version of *what* can be an argument of type CP, which is specified in `(^ {XCOMP|COMP}* {XCOMP|COMP}) = ! {(!REL)=c-|(! PRON-FORM) = what (! POSS PRED) ~= 'PRO'}`. Again, these can also be originally embedded in higher CPs. The final option 
-
-
-
-		| (^ ADJUNCT: (<-PTYPE)=sem; OBJ )= ! @(OT-MARK Q-Ad)} 
-
-
-         5. (^ ADJUNCT: (<-PTYPE)=sem; OBJ)= ! @(OT-MARK Q-Ad): for most wh-words/phrases (except how and why) the wh-word can be in the object position of an adjunct PP, as specified by the off-path constraint that forces it to have a semantic preposition (which are specified at the end)
-               - the OT mark marks it as preferred over the other adjunct type, but not more than when it replaces an argument
-
-
-
-- PP:
-
-      - 1. If the wh-word is an OBL-TO, the "to" can be stranded
-  
-      - 2. if the wh-word is an Oblique, the P can be stranded
-
-      - 3. If the wh-word is an adjunct, it can strand its P and thus specificy a pred type (except for how and why because of their lexicon)
-
-
-- note: in ditransitives without P stranding, there is ambiguity and multiple solutions, as the wh-word can refer to either OBJ, OBJ2 or OBL-TO, or just either OBJ2 or OBL-TO
-
-
-### testsuite?
+#### Preposition stranding
+The presence of a PP with a preposition and a wh-phrase is so far only possible in-situ. However, the wh-phrase may also be fronted, but leave the preposition behind in its base position, such as in "Where did he appear from?". This is especially important for the PP adjuncts, which must be defined as semantic somehow. Thus, an optional preposition can be inserted after the VP. If available as an argument, the stranded preposition forces the `OBL` or `OBL-TO` function on the wh-phrase. If neither is available, the wh-word is treated as part of an adjunct PP. *why* and *how* are disallowed with preposition stranding, as they are specified in the lexicon as not being able to combine with a preposition.
 
   
 ### Future work
- - fronted PPs: "from where did Mary appear?"
- - thematic role implementation: wh-words are constrained by the thematic roles they are able to ask about, I made rough destinctions, but using thematic roles would allow for much more fine grained distinctions
+
+The presented projects only scratches the surface of the constraints on the realization of each wh-word. Future projects should take more features and possible constraints into account, such as specifying the thematic roles that wh-words can occupy and which main verbs can license which wh-word. Further, there are other structures, such as fronted PPs with wh-phrases ("from where did Mary appear?") and embedded wh-phrases ("I wonder where Mary appeared"), which could act as extensions to the current project.
 
 
 
