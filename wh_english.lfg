@@ -9,13 +9,13 @@ GOVERNABLERELATIONS    SUBJ OBJ OBJ2 COMP XCOMP OBL OBL-?+.
 SEMANTICFUNCTIONS    ADJUNCT TOPIC FOCUS POSS STANDARD.
 NONDISTRIBUTIVES    NUM PERS CONJ-FORM.
 EPSILON   e.
-OPTIMALITYORDER NOGOOD OblPas PPadj.
+OPTIMALITYORDER NOGOOD OblPas PPadj Q-NREL Q-Ad.
 
 ----
 DEMO ENGLISH MORPHOLOGY (1.0)
 
 TOKENIZE:
-P!basic-parse-tok.fst G!default-gen-tokenizer.fst
+P!basic-parse-tok.fst
 
 ANALYZE:
 english.infl.patch.full.fst
@@ -24,7 +24,7 @@ english.infl.patch.full.fst
 
 DEMO   ENGLISH   RULES (1.0)
 
-ROOT --> { S | Simp | Stop}.
+ROOT --> { S | Simp | Stop | WHQ}.
 
 Simp --> e: (^ SUBJ PRED) = 'pro'
 	    (^ SUBJ PERS) = 2; 
@@ -32,18 +32,47 @@ Simp --> e: (^ SUBJ PRED) = 'pro'
  	  EXCL.
 
 
-Stop --> {NP: 	(^ TOPIC) = !
-		(^ {XCOMP|COMP}* {OBJ|OBJ2}) = !
-		|CP: (^ TOPIC) = !
-		(^ {XCOMP|COMP}) = ! }  "works for comp but not xcomp"
+Stop --> NP: (^ TOPIC) = !
+		(^ {XCOMP|COMP}* {OBJ|OBJ2}) = !;
 	    (COMMA) S.
+
+
+WHQ --> {NP: (^ FOCUS) = ! "wh-word is focused from some source to be in front"
+		{(^ {XCOMP|COMP}* {XCOMP|COMP|OBJ2|OBL-TO|OBL}) = ! "wh-word can be either of these"
+
+		| (^ {XCOMP|COMP}* {OBJ}) = ! (!REL)=c+ "OBJ wh-word must be be relative-type pronoun"
+
+		| !$(^ADJUNCT) @(OT-MARK Q-NREL) (!REL)=c-   "wh-word can be adjunct if it does not have the option to be relative"
+
+		| (^ ADJUNCT: (<-PTYPE)=sem; OBJ )= ! @(OT-MARK Q-Ad)}  "disprefer question from adjuncts"
+
+		(! (POSS) PRON-TYPE) =c int; "fronted pronoun must be wh-word"
+
+        AUX: (^ VFORM) =c inf "auxiliary for do-support"
+
+		| NP: 	(^ FOCUS) = ! "if WH-word is subject, verb is inflected"
+		   (^ SUBJ) = !
+		   (^ VFORM) ~= inf
+		   (!REL)=c+ "only possible if wh-word can be relative"
+		   (! (POSS) PRON-TYPE) =c int} "fronted pronoun must be wh-word"
+
+		(NP: (^SUBJ) = !    "NP when the WH-word is not from pronoun"
+            (!CASE) = nom)
+	    VP
+
+	    ({P: (^OBL-TO) = ! "stranded P: 'to'"
+	    |P: (^OBL) = ! "stranded P from Oblique"
+        |P: !$(^ADJUNCT)}) "stranded adjunct P"
+
+	    QUEST. "question mark"
 
 
 
 S -->   NP: (^SUBJ) = !
-            (!CASE) = nom;
+            (!CASE) = nom
+            (! (POSS) PRON-TYPE) ~= int;  "subject pronouns cannot be interrogative"
         VP: (^ TENSE);
-	(PERIOD).
+	    (PERIOD).
 
 VP -->  (AUX)
 	ADVP*: !$(^ADJUNCT); 
@@ -59,10 +88,12 @@ VP -->  (AUX)
 	     | (^ OBL) = ! "or a general oblique"
 	       };
 	({ CP: (^ COMP) = !
+	   (!COMP-FORM) =c that
  	  |
  	   VPinf: (^XCOMP) = !
 	    	  (^ VFORM) = inf
-	}).
+	})
+	(CP: !$(^ADJUNCT) (!COMP-FORM) =c because).
 
 	
 CP -->  C S. 
@@ -77,7 +108,7 @@ AP --> A.
 NP -->  {({D | PRON})
  	AP*: ! $ (^ ADJUNCT); 
  	N			
-	| PRON}.
+	| PRON: (^PRON-TYPE)}.
 
 
 PP --> { P:   ^ = ! 
@@ -208,8 +239,8 @@ BARE-AGR = { (^VFORM) ~= inf
 	    }
 	  | (^VFORM) = inf}.
 
-PAS-TE-PAR = {(^ TENSE) = past
-	      |(^PARTICIPLE) = past}.
+S-AGR = (^ SUBJ PERS) = 3  "for verbs in -s"
+	    (^ SUBJ NUM) = sg.
 
 
 "Subcategorization frames"
@@ -241,20 +272,22 @@ PROPER-NOUN-PNC(P N C) = (^PRED) = 'P'
 
 
 "pronouns"
-PRON(P N Z T) =   (^ PRED) = 'P'
+PRON(P N Z T) =   (^ PRED) = 'PRO'
 	  	  (^ NUM) = N
 	  	  (^ PERS) = Z
 	  	  (^ PRON-TYPE) = T
+	  	  (^PRON-FORM) = P
 	  	  (^ NTYPE) = pronoun. 
 
-POSS-PRON(P N Z) =(^ POSS PRED) = 'P'
+
+POSS-PRON(P N Z T) =(^ POSS PRED) = 'PRO'
 	  	  (^ POSS NUM) = N
 	  	  (^ POSS PERS) = Z
-	  	  (^ POSS PRON-TYPE) = poss
-	  	  (^ POSS NTYPE) = pronoun. 
+	  	  (^ POSS PRON-TYPE) = T
+	  	  (^PRON-FORM) = P
+	  	  (^ POSS NTYPE) = pronoun.
 
-S-AGR = (^ SUBJ PERS) = 3  "for verbs in -s"
-	(^ SUBJ NUM) = sg. 
+
 
 "prepositions"
 PREP(P) = { (^ PRED) = 'P<(^OBJ)>' 	"adjunct"
@@ -278,70 +311,10 @@ PASS(FRAME) = {FRAME (^PASSIVE) = -
 
 "OT marks"
 OT-MARK(_mark) =  _mark $ o::*.	"assigns an OT mark, from common templates"
-      
-
 
 ----
-	
 
 FIRST ENGLISH LEXICON (1.0)
-
-"nouns"
-
-bed 	N-S	XLE 	(^ PRED) = '%stem'
-			(^ NTYPE) = count.
-
-banana 	N-S	XLE 	(^ PRED) = '%stem'
-			(^ NTYPE) = count.
-
-cake		N * @(COMMON-NOUN-PNC cake sg count).
-
-meal		N * @(COMMON-NOUN-PNC meal sg count).
-
-meals		N * @(COMMON-NOUN-PNC meal pl count).
-
-cat		N * @(COMMON-NOUN-PNC cat sg count).
-
-book		N * @(COMMON-NOUN-PNC book sg count).
-
-dog		N * @(COMMON-NOUN-PNC dog sg count).
-
-owner		N * @(COMMON-NOUN-PNC owner sg count).
-
-child		N * @(COMMON-NOUN-PNC child sg count).
-
-garden		N * @(COMMON-NOUN-PNC garden sg count).
-
-coffee 		N * @(COMMON-NOUN-PNC coffee sg count).
-
-tiger 		N * @(COMMON-NOUN-PNC tiger sg count).
-
-cheetah 	N * @(COMMON-NOUN-PNC cheetah sg count). 
-
-deer		N * @(COMMON-NOUN-PNC deer sg mass).
-
-exam 		N * @(COMMON-NOUN-PNC exam sg count).
-
-"bananas		N * @(COMMON-NOUN-PNC banana pl count)."
-
-gorilla		N * @(COMMON-NOUN-PNC gorilla sg count).
-
-robot 		N * @(COMMON-NOUN-PNC robot sg count).
-
-leopards 	N * @(COMMON-NOUN-PNC leopard pl count). 
-
-waiter 		N * @(COMMON-NOUN-PNC waiter sg count).
-
-restaurant 	N * @(COMMON-NOUN-PNC restaurant sg count).
-
-customers	N * @(COMMON-NOUN-PNC customer pl count).
-
-
-Mary		N * @(PROPER-NOUN-PNC Mary sg count).
-
-Sophie		N * @(PROPER-NOUN-PNC Sophie sg count).
-
-
 
 "pronouns"
 
@@ -375,37 +348,135 @@ You	PRON *      @(PRON you sg 2 pers)
 you	PRON *      @(PRON you sg 2 pers)
 		    (^CASE) = nom.
 
-My 	PRON * 	    @(POSS-PRON I sg 1).
+me	PRON *      @(PRON I sg 1 pers)
+		          (^CASE) = acc.
 
-my 	PRON * 	    @(POSS-PRON I sg 1).
+My 	PRON * 	    @(POSS-PRON I sg 1 poss).
+
+my 	PRON * 	    @(POSS-PRON I sg 1 poss).
 
 
 "interrogative pronouns"
 
-Who	PRON *      @(PRON who sg 3 int).
+Why PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = why
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -
+	  	    ~((ADJUNCT OBJ ^ ) PTYPE).
+
+why PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = why
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -
+	  	    ~((ADJUNCT OBJ ^ ) PTYPE).
+
+How PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = how
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -
+	  	    ~((ADJUNCT OBJ ^ ) PTYPE).
+
+how PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = how
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -
+	  	    ~((ADJUNCT OBJ ^ ) PTYPE).
+
+When PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = when
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -.
+
+when PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = when
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -.
+
+Where PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = where
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -.
+
+where PRON *  (^ PRED) = 'PRO'
+	  	    (^ PRON-TYPE) = int
+	  	    (^PRON-FORM) = where
+	  	    (^ NTYPE) = pronoun
+	  	    (^REL) = -.
+
+
+"assume: who == whom"
+Who	PRON *      @(PRON who sg 3 int)
+                 (^CASE) = nom
+                 (^REL) = +.
+
+who	PRON *      @(PRON who sg 3 int)
+                 (^CASE) = nom
+                 (^REL) = +.
+
+
+What	PRON *   {@(PRON what sg 3 int)
+                 (^CASE) = nom
+                 |
+                 (^ POSS PRED) = 'PRO'
+                  (^ POSS PRON-TYPE) = int
+                  (^ PRON-FORM) = what
+                  (^ POSS NTYPE) = pronoun}
+                  (^REL) = +.
+
+what	PRON *   {@(PRON what sg 3 int)
+                 (^CASE) = nom
+                 |
+                 (^ POSS PRED) = 'PRO'
+                  (^ POSS PRON-TYPE) = int
+                  (^ PRON-FORM) = what
+                  (^ POSS NTYPE) = pronoun}
+                  (^REL) = +.
+
+Which	PRON *    (^ POSS PRED) = 'PRO'
+                  (^ POSS PRON-TYPE) = int
+                  (^ PRON-FORM) = which
+                  (^ POSS NTYPE) = pronoun
+                  (^REL) = +.
+
+which	PRON *    (^ POSS PRED) = 'PRO'
+                  (^ POSS PRON-TYPE) = int
+                  (^ PRON-FORM) = which
+                  (^ POSS NTYPE) = pronoun
+                  (^REL) = +.
+
+Whose	PRON *    (^ POSS PRED) = 'PRO'
+                  (^ POSS PRON-TYPE) = int
+                  (^ PRON-FORM) = whose
+                  (^ POSS NTYPE) = pronoun
+                  (^REL) = +.
+
+whose	PRON *    (^ POSS PRED) = 'PRO'
+                  (^ POSS PRON-TYPE) = int
+                  (^ PRON-FORM) = whose
+                  (^ POSS NTYPE) = pronoun
+                  (^REL) = +.
 
 
 
 "verbs"
-
 eat       V-S XLE @(OPT-TRANS %stem). 
-
 
 like	V-S XLE  @(TRANS %stem).
 
-
-say	V-S  XLE  (^ PRED) ='%stem<(^ SUBJ)(^ COMP)>'.
-
-
-hug	V-S  XLE  @(TRANS %stem).
-
+hug	    V-S  XLE  @(TRANS %stem).
 
 appear 	  V-S XLE @(INTRANS %stem).
 
 catch      V-S XLE @(TRANS %stem).
 
 jump     V-S XLE @(INTRANS %stem).
-
 
 wait		V-S XLE	{ @(INTRANS %stem) |
 			@(INTRANS-OBL %stem)
@@ -419,40 +490,31 @@ take    V-S XLE @(TRANS	%stem).
 
 sleep  V-S XLE @(INTRANS %stem).
 
-feed   V-S XLE @(TRANS %stem).  "could be ditrans"
+feed   V-S XLE @(TRANS %stem).
+
+give V-S XLE @(DITRANS %stem).
 
 have   V-S XLE @(TRANS %stem).
 
-sleep   V-S XLE @(INTRANS %stem).
-
 educate V-S XLE @(TRANS %stem).
 
+say	V-S  XLE  (^ PRED) ='%stem<(^ SUBJ)(^ COMP)>'.
 
-
-"illegal with runs"
-run     V-S XLE (^ PRED) ='%stem<(^ SUBJ)(^ XCOMP)>'
-	      		(^ SUBJ) = (^ XCOMP SUBJ).
-
+think 	  V-S XLE (^PRED) = '%stem<(^SUBJ)(^COMP)>'.
 
 
 "embedding verbs are weird with non-3rd person singular"
 convince  	V-S     XLE 	(^ PRED) = '%stem<(^ SUBJ)(^ OBJ)(^ XCOMP)>'
 	      		(^ OBJ) = (^ XCOMP SUBJ).
 
-
 persuade  V-S     XLE  (^ PRED) = '%stem<(^ SUBJ)(^ OBJ)(^ XCOMP)>'
 	                    (^ OBJ) = (^ XCOMP SUBJ).
-
 
 try 	  V-S     XLE  (^ PRED) = '%stem<(^ SUBJ)(^ XCOMP)>'
                        (^ XCOMP SUBJ) = (^SUBJ).
 
-
-seem V-S XLE (^ PRED) = 'seem<(^XCOMP)>(^SUBJ)'
-         (^ XCOMP SUBJ) = (^ SUBJ).
-
-
-
+seem      V-S   XLE  (^ PRED) = 'seem<(^XCOMP)>(^SUBJ)'
+                     (^ XCOMP SUBJ) = (^ SUBJ).
 
 "Adjectives"
 grey		A *   	(^PRED) = 'grey'.
@@ -494,7 +556,6 @@ A		D *   	(^DEF) = -
 an		D *   	(^DEF) = -
 			(^ NUM) = sg.   
 
-
 "other function words"
 was   AUX*	(^TENSE)=past
 	  	(^PARTICIPLE) = past
@@ -508,25 +569,41 @@ were  AUX*	(^TENSE)=past
 to    PARTinf *	(^ VFORM) =c inf;
       P *	@(PREP to).
 
-and 	  CONJ * (^ COORD-FORM) = and;
-	  CONJnp * (^ COORD-FORM) = and
-		   (^ NUM) = pl.
+and     CONJ *    (^ COORD-FORM) = and;
+	    CONJnp *  (^ COORD-FORM) = and
+		          (^ NUM) = pl.
 
 that  C * (^COMP-FORM) = that.
 
+because C * (^COMP-FORM) = because.
+
+
+"do-support auxiliaries"
+
+did  AUX *	(^TENSE)=past.
+
+do  AUX *	(^TENSE)=pres
+            { (^ SUBJ NUM) = pl
+            | (^ SUBJ PERS) ~= 3
+            (^ SUBJ NUM) = sg}.
+
+does AUX *	(^TENSE)=pres
+            @S-AGR.
+
+
 "prepositions"
 
-by    P *      	@(PREP by).
+by    P *   @(PREP by).
 
 in    P *	@(PREP in).
 
 for   P *	@(PREP for).
 
-on    P *     	@(PREP on).
+on    P *   @(PREP on).
 
-at    P *      	@(PREP at).
+at    P *   @(PREP at).
 
-
+from  P *	@(PREP from).
 
 
 "punctuation"
@@ -546,7 +623,7 @@ MORPH ENGLISH RULES (1.0)
 "sample rule"
 
 "this deals with verbs.  
-The sublexcial items are the POS assigned to the various tags in morph-lex.lfg" 
+The sublexical items are the POS assigned to the various tags in morph-lex.lfg"
 
    V --> V-S_BASE "verb stem, e.g. run"
  	 V-POS_BASE "suffix saying that this is a verb: +Verb"
