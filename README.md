@@ -8,6 +8,8 @@ Github link:[ https://github.com/kakrusch/gramdev.git](https://github.com/kakrus
 
 - main clause wh-questions in English, implement do-support, inflection differences and selectional properties based on the wh-word and which part of the structure it asks about
 - implement 8 wh-words: Who, Whose, Which, What, Where, When, How and Why
+- if asking about subject: inflected verb based on q-NP, if from any other position: do-support and infinitival verb
+- all the wh-words have their own properties
 - based on LFG implementations from *A Grammar Writer's Cookbook* and the *Handbook of Lexical Functional Grammar*
 
 
@@ -23,25 +25,23 @@ I implemented several basic but task-specific changes to the lexicon. Initially,
 
 
 ### WH-words in the lexicon:
-The first half of the implementation included adding wh-words to the lexicon, each with different specific properties. All wh-words are treated as pronouns, with properties like either possessive or personal pronouns, but each with the property `(^ PRON-TYPE) = int` to mark them as interrogative. All wh-words also have both a capital and a lowercased version. I used mainly existing features from the XLE Documentation, 
+The first half of the implementation included adding wh-words to the lexicon, each with different specific properties. All wh-words are treated as pronouns, with properties like either possessive or personal pronouns, but each with the property `(^ PRON-TYPE) = int` to mark them as interrogative. All wh-words also have both a capital and a lowercase version. I mainly used existing features from the XLE Documentation but implemented a `(^REL)= +/-` feature to specify those wh-words that can also be relative pronouns, such as in "Mary, **who** is a cat, appeared". This project does not implement relative clauses but the distinction is relevant, as those wh-words that are optionally relative can be used to ask about NPs in `SUBJ` or `OBJ` positions, whereas the other wh-words cannot. For example, "Who appeared?" is `+REL` and grammatical, but "Where appeared?" is `-REL` and ungrammatical.
+
+The pronouns that can act as relative pronouns and are specified as `(^REL)= +` are: *who, whose, which*, and *what*. As mentioned, these can ask about the `SUBJ` and `OBJ` of the sentence. *Who* uses the regular pronoun template but is specified as 3rd person sg, as this is how it agrees when in subject position. *Which* and *Whose* use the possessive pronoun structure, but are not specified for person or number, as they can combine with any N and if present in subject position, agreement happens with the N's features not the wh-word.
 
 
 
-- I added an additional feature (^REL) that can be either "+" or "-", to specify wh-words that can also be relative pronouns. This difference is relevant because those pronouns that can be relative must have an NP-position (such as the subject or Object).
-
-Pronouns that can act as relative pronouns -> can come from subject or object (must be NP) 
-- Who: personal pronoun -> 3rd sg agreement in SUBJ
-- Whose and Which: possessive -> agreement with noun in SUBJ
 - What: possessive and personal -> agreement like the counterparts
+
+- what: alternatively either like "who" or like "which/whose"
+
+
+
 
 pronouns that do not act as relative pronouns -> not from subject or OBJ, agreement with subject 
 - Where and When: personal -> can be within PP
 - How and Why: personal -> cannot come from PP/strand a P
 
-optionally relative pronouns:
-- Who: like regular personal pronouns, but is of the type that can be relative
-- Which and Whose: like possessive pronouns, but without PERSON or NUMBER features, as they don't have these features inherently and don't need to agree, as their sister-noun will agree if needed.
-- what: alternatively either like "who" or like "which/whose"
 
   non-relative pronouns:
   - where and when: like personal pronouns but also without agreement, as they are always from adjuncts and don't need to agree
@@ -89,7 +89,7 @@ WH-word rule
   
 ### Future work
  - fronted PPs: "from where did Mary appear?"
- - thematic role implementation: wh-words are constrained by the thematic roles they are able to ask about
+ - thematic role implementation: wh-words are constrained by the thematic roles they are able to ask about, I made rough destinctions, but using thematic roles would allow for much more fine grained distinctions
 
 
 
