@@ -37,11 +37,11 @@ Wh-words that cannot act as relative pronouns, at least not a referential one, a
 
 In the c-structure rules, I introduced a rule called WHQ, which specifies the structure of wh-questions. This rule is not called  SInt, as an English grammar would need a different rule for polar interrogatives, which have a different structure. The basic structure of the rule is as follows:
 
-     - Some kind of wh-word or phrase, with or without an auxiliary
-     - An optional NP-subject, that is mandatory if the wh-phrase itseld is not the subject
-     - A mandatory VP
-     - Some kind of optional preposition, to allow for preposition stranding 
-     - A mandatory question mark, to mark the sentence as an interrogative sentence
+- Some kind of wh-word or phrase, with or without an auxiliary
+- An optional NP-subject, that is mandatory if the wh-phrase itseld is not the subject
+- A mandatory VP
+- Some kind of optional preposition, to allow for preposition stranding 
+- A mandatory question mark, to mark the sentence as an interrogative sentence
 
 
 #### The WH-phrase options
